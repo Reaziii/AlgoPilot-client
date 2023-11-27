@@ -38,3 +38,25 @@ export const add_problem = async (slug: string, problems: { slug: string, positi
         return false;
     }
 }
+
+export const all_published_contest = async (): Promise<{ contests: IContest[] }> => {
+    try {
+
+        let ret = await serverClient.get("/contest/published");
+        let contest: IContest[] = ret.data.contests
+        return { contests: contest }
+    } catch (err) {
+        return { contests: [] };
+    }
+}
+
+export const my_contests = async (email: string): Promise<{ contests: IContest[] }> => {
+    try {
+        let ret = await serverClient.get("/contest/my");
+        let contest: IContest[] = ret.data.contests
+        return { contests: contest }
+    } catch (err) {
+        console.log(err);
+        return { contests: [] };
+    }
+}
