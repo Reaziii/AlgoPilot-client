@@ -75,7 +75,7 @@ const Problem: React.FC<{ params: { slug: string, id: string } }> = async ({ par
       </div>
       <div className='flex flex-col w-[28%]'>
         <ExtraDetails timelimit={`${problem.problem?.timelimit}s`} memorylimit={`${parseInt(problem.problem?.memorylimit ?? "0") / 1000000}MB`} />
-        <Submit submitCode={handleCodeSubmit} slug={params.slug} name={problem.problem?.name ?? ""} />
+        <Submit position={params.id} submitCode={handleCodeSubmit} slug={params.slug} name={problem.problem?.name ?? ""} />
         <br />
         <SolvedVsTried />
       </div>

@@ -8,6 +8,7 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import { LoadingContest } from '@/providers/Loading';
+import client from '@/utils/client';
 
 let colors: { [key: string]: string } = {
     "Time Limit Exceed": "#FF8C00",
@@ -19,10 +20,11 @@ let colors: { [key: string]: string } = {
     "Pending": "#D3D3D3"
 }
 
-const Submit: React.FC<{ slug: string, name: string, submitCode: (formdata: FormData) => Promise<void> }> = ({ slug, name, submitCode }) => {
+const Submit: React.FC<{ position: string, slug: string, name: string, submitCode: (formdata: FormData) => Promise<void> }> = ({ slug, name, submitCode, position }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [code, setCode] = useState<string>("");
-    const {setLoading} = useContext(LoadingContest)
+    const { setLoading } = useContext(LoadingContest)
+
     const handleFileUpload = (file: ChangeEvent) => {
         const input = file.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
@@ -37,12 +39,23 @@ const Submit: React.FC<{ slug: string, name: string, submitCode: (formdata: Form
         }
     }
     let submit = async () => {
-        let formdata: FormData = new FormData();
-        formdata.append("code", code);
-        formdata.append("language", "cpp")
-        // setLoading(true);
-        await submitCode(formdata)
-        // setLoading(false);
+        try {
+            let formdata: FormData = new FormData();
+            formdata.append("code", code);
+            formdata.append("language", "cpp")
+            setLoading(true);
+            let result = await client.post(`/contest/submit/${slug}/${position}`, {
+                code,
+                language: "cpp",
+
+            })
+            setLoading(false);
+            if (result.data.status) {
+                window.location.href = "/submission/" + result.data.id
+            }
+        } catch (err) {
+            setLoading(false);
+        }
     }
     return (
         <div className=" bg-white border border-gray-200 rounded-lg shadowp-[20px] p-[20px] h-[200px]">

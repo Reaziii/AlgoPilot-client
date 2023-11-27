@@ -55,7 +55,7 @@ export const trankedString = (str: string, len: number) => {
 
 export function timeAgo(submissionTime: Date): string {
     const now: Date = new Date();
-    const millisecondsAgo: number = now.getTime() - submissionTime.getTime();
+    const millisecondsAgo: number = now.getTime() - new Date(submissionTime).getTime();
     const secondsAgo: number = millisecondsAgo / 1000;
     const minutesAgo: number = secondsAgo / 60;
     const hoursAgo: number = minutesAgo / 60;
