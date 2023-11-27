@@ -60,3 +60,88 @@ export const my_contests = async (email: string): Promise<{ contests: IContest[]
         return { contests: [] };
     }
 }
+
+export const checkImAuthor = async (slug: string): Promise<{ status: boolean }> => {
+    try {
+        let ret = await serverClient.get("/contest/checkiamauthor/" + slug);
+        return (ret.data as { status: boolean })
+
+    } catch (err) {
+        return { status: false }
+    }
+}
+
+export const getContestSatus = async (slug: string): Promise<"running" | "finished" | "upcoming" | "error"> => {
+    try {
+        let ret = await serverClient.get("/contest/conteststatus/" + slug);
+        return ret.data;
+    }
+    catch (err) {
+        return "error"
+    }
+}
+
+
+export const changePublishMoode = async (slug: string): Promise<Boolean> => {
+    try {
+        let ret = await serverClient.get("/contest/changepublish/" + slug);
+        console.log(ret.data)
+        return ret.data as Boolean;
+
+    } catch (err) {
+        console.log("failed to update publish mood")
+        return false;
+    }
+}
+
+export const handleDeleteContest = async (slug: string): Promise<Boolean> => {
+    try {
+        let ret = await serverClient.delete("/contest/" + slug);
+        return ret.data as Boolean
+    }
+    catch (err) {
+        return false;
+    }
+}
+
+export const get_authors = async (slug: string): Promise<IContestAuthors[]> => {
+    try {
+        let ret = await serverClient.get("/contest/getauthors/" + slug);
+        return ret.data
+    }
+    catch (err) {
+        return []
+    }
+}
+
+export const update_contest = async (slug: string, formdata: FormData): Promise<{ status: boolean, message: string, slug?: string }> => {
+    try {
+        let req = await serverClient.put("/contest/" + slug, {
+            name: formdata.get("contestname"),
+            date: formdata.get("date"),
+            time: formdata.get("time"),
+            length: formdata.get("length"),
+            announcement: formdata.get("announcement"),
+            description: formdata.get("description"),
+            authors: formdata.get("authors")
+
+        });
+        return req.data;
+    }
+    catch (err) {
+        console.log(err)
+        return { status: false, message: "Unknown error" }
+    }
+}
+
+
+export const get_contest_probem_details = async (slug:string, position:number):Promise<{ status: boolean, problem?: IProblem, test_cases?: ITestcase[]  }>=>{
+    try{
+        let ret = await serverClient.get(`/contest/problemdetails/${slug}/${position}`);
+        return ret.data
+    }
+    catch(err)
+    {
+        return {status : false}
+    }
+}
