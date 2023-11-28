@@ -48,7 +48,7 @@ const Contest: React.FC<{ params: { slug: string } }> = async ({ params }) => {
 					<a href={`/updatecontest/${params.slug}`} className='border px-3 py-2 rounded-sm hover:bg-[#F7FAFC]'>
 						Update
 					</a>
-					<a href={`/contest/judgeservers/${params.slug}`} className='border px-3 py-2 rounded-sm hover:bg-[#F7FAFC]'>
+					<a href={`/judgeservers/${params.slug}`} className='border px-3 py-2 rounded-sm hover:bg-[#F7FAFC]'>
 						Judge Servers
 					</a>
 					<form action={handleDelete}>

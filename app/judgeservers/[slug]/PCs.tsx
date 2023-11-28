@@ -28,10 +28,12 @@ const PCs: React.FC<{ slug: string, oldTokens: (IJudgeServerToken & { id: string
         pcname: newTokenNames[id]
       });
       setLoading(false)
+      console.log(ret.data)
       let res = ret.data
-      if (res === null) return;
+      if (res.status === false) return;
       let temp = newTokens;
-      temp[id] = res;
+      temp[id] = res.data;
+
       setNewTokens([...temp])
     } catch (err) {
       setLoading(false)

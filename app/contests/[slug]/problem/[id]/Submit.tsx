@@ -50,9 +50,9 @@ const Submit: React.FC<{ position: string, slug: string, name: string, submitCod
 
             })
             setLoading(false);
-            if (result.data.status) {
-                window.location.href = "/submission/" + result.data.id
-            }
+            // if (result.data.status) {
+            //     window.location.href = "/submission/" + result.data.id
+            // }
         } catch (err) {
             setLoading(false);
         }
