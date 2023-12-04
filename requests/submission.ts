@@ -11,7 +11,7 @@ export const get_problem_slug_from_submission_id = async (id: string): Promise<{
     }
 }
 
-export const submissionDetails = async (id: string) => {
+export const submissionDetails = async (id: string): Promise<{ status: boolean, submission: ISubmission, problem: IProblem } | null> => {
     try {
         let ret = await serverClient.get("/submission/details/" + id);
         return ret.data

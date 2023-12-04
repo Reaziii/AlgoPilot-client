@@ -1,31 +1,32 @@
 "use client"
 import { SubmittedStatus } from '@/enum';
+import ClientSocket from '@/lib/ClientSocket';
 import React, { useEffect, useRef, useState } from 'react'
+import { Socket } from 'socket.io-client';
 
-const TestCases: React.FC<{ submission_id: string }> = ({ submission_id }) => {
-    let [testcases, setTestCases] = useState<SubmissionStatus[]>([]);
-    let timeRef = useRef<NodeJS.Timeout>();
+const TestCases: React.FC<{ submission_id: string, _testcases: { status: number, color: string, text: string, tcid: string, time:number, memory:number }[] }> = ({ submission_id, _testcases }) => {
+    let [testcases, setTestCases] = useState<{ status: number, color: string, text: string, tcid: string, memory:number, time:number }[]>([..._testcases]);
     let i = 0;
+    let ioRef = useRef<Socket>();
 
     useEffect(() => {
-        if (timeRef.current) clearInterval(timeRef.current);
-        timeRef.current = setInterval(() => {
-            let testcasesss = testcases;
-            if (i % 3 == 0) {
-                testcasesss.push(SubmittedStatus.Pending);
+        if (ioRef.current) return;
+        ioRef.current = ClientSocket.connect();
+        ioRef.current.emit("submissionstatus", submission_id)
+        ioRef.current.on("submissionstatus", (data: string) => {
+            let _data = JSON.parse(data) as { status: number, color: string, text: string, tcid: string, time:number, memory:number };
+            let test = testcases;
+            for (let i = 0; i < test.length; i++) {
+                if (test[i].tcid === _data.tcid) {
+                    test[i] = _data;
+                    break;
+                }
             }
-            else if (i % 3 == 1) {
-                testcasesss[testcasesss.length - 1] = (SubmittedStatus.Running);
-            }
-            else if (i % 3 === 2) testcasesss[testcasesss.length - 1] = (SubmittedStatus.AC);
-            setTestCases([...testcasesss])
-            ++i;
-            if (i === 42) clearInterval(timeRef.current)
-        }, 1000)
+            setTestCases([...test])
+        })
 
 
-    }, [submission_id])
-
+    }, [])
 
     return (
         <div className='mt-[50px]'>
@@ -33,8 +34,8 @@ const TestCases: React.FC<{ submission_id: string }> = ({ submission_id }) => {
                 testcases.map((item, key) => (
                     <div key={key} className='w-full bg-white flex px-[20px] items-center justify-between h-[60px] mb-2 rounded-md border '>
                         <p className='w-[25%] flex justify-center'>{key}</p>
-                        <p className='w-[25%] flex justify-center'>0.00s</p>
-                        <p className='w-[25%] flex justify-center'>0.00MB</p>
+                        <p className='w-[25%] flex justify-center'>{(item.time/1000).toFixed(2)}s</p>
+                        <p className='w-[25%] flex justify-center'>{(item.memory/1000).toFixed(2)}MB</p>
                         <p className='w-[25%] flex justify-center' style={{
                             color: SubmittedStatus.get(item.status).color
                         }}>{item.text}</p>

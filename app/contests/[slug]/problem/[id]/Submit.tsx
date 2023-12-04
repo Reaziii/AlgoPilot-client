@@ -50,9 +50,9 @@ const Submit: React.FC<{ position: string, slug: string, name: string, submitCod
 
             })
             setLoading(false);
-            // if (result.data.status) {
-            //     window.location.href = "/submission/" + result.data.id
-            // }
+            if (result.data.status) {
+                window.location.href = "/submission/" + result.data.id
+            }
         } catch (err) {
             setLoading(false);
         }
@@ -73,7 +73,6 @@ const Submit: React.FC<{ position: string, slug: string, name: string, submitCod
                             <div className='w-[100%] h-full relative'>
                                 <select className='h-[35px] w-[200px] border-[#ccc] border-[1px] mb-[10px] mt-[10px] outline-none'>
                                     <option>C or CPP</option>
-                                    <option>Python</option>
                                 </select>
                                 <div className='w-full h-full flex justify-between'>
                                     <AceEditor

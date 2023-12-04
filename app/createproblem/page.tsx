@@ -21,7 +21,7 @@ const CreateProblem = () => {
             memorylimit
         }).then(res => {
             if (res.data.status) {
-                window.location.href = "/problems/create/testcases/" + res.data.problem.slug
+                window.location.href = "/testcases/" + res.data.problem.slug
             }
             else {
                 alert(res.data.message)
@@ -72,8 +72,8 @@ const CreateProblem = () => {
                             <input value={timelimit} onChange={(e) => setTimelimit(e.target.value)} type="number" className="mt-[10px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 " placeholder="Time limit in second" required></input>
                         </div>
                         <div className='mt-[60px] w-[48%]'>
-                            <p className='font-bold'>Memory limit in bytes</p>
-                            <input value={memorylimit} onChange={(e) => setMemorylimit(e.target.value)} type="number" className="mt-[10px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 " placeholder="Memory limit in bytes" required></input>
+                            <p className='font-bold'>Memory limit in Kilobytes</p>
+                            <input value={memorylimit} onChange={(e) => setMemorylimit(e.target.value)} type="number" className="mt-[10px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 " placeholder="Memory limit in kilobytes" required></input>
                         </div>
                     </div>
 

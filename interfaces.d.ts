@@ -77,7 +77,10 @@ interface ISubmission {
     submission_time: Date;
     user: string;
     problemSlug: string;
-    status: { status: number, color: string, text: string };
+    status: { status: number, color: string, text: string,memory:number, time:number };
+    testcases : { status: number, color: string, text: string, tcid:string, memory:number, time:number }[];
+    memory: number;
+    time: number;
 }
 
 interface IContestSubmission {

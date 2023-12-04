@@ -28,7 +28,6 @@ export const get_problems = async (slug: string): Promise<{ problems: IProblem[]
 
 
 export const add_problem = async (slug: string, problems: { slug: string, position: number }[]): Promise<Boolean> => {
-    console.log('started')
     try {
         let ret = await serverClient.post("/contest/addproblems/" + slug, {
             problems

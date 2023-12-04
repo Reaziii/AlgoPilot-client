@@ -16,6 +16,10 @@ const Header = async () => {
     {
       name: "My Contest",
       "link": "/mycontests"
+    },
+    {
+      name : "My problems",
+      link : "/myproblems"
     }
   ]
   return (
